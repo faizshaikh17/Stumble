@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        min: 2,
-        max: 30,
+        minLength: 2,
+        maxLength: 30,
     },
-    email: {
+    emailId: {
         type: String,
         required: true,
         trim: true,
@@ -17,10 +17,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-},
-    {
-        timestamps: true
-    });
+}, {
+    timestamps: true
+});
 
 userSchema.virtual("userId").get(function () {
     return this._id;
@@ -31,4 +30,4 @@ userSchema.set("toObject", { virtuals: true });
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+module.exports = User;

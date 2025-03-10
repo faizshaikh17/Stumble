@@ -1,17 +1,20 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const userRouter = require('./routes/userRoutes');
 
-const authRouter = require('./routes/auth');
-const dbConnection = require('./config/database')
+const dbConnection = require('./config/database');
+
 dbConnection()
-    .then((res) => console.log("db running"))
-    .catch((err) => console.log(err.message));
+    .then(() => console.log('DB connected successfully'))
+    .catch((err) => console.error(`DB connection error: ${err.message}`));
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/auth', authRouter);
+app.use('/', userRouter);
 
-app.listen(port);
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});

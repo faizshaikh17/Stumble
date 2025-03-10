@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const dbConnection = async () => {
-    await mongoose.connect("mongodb+srv://node:dgCxcaMQyOU5RtBA@node.tabkb.mongodb.net/zeetly")
+    await mongoose.connect("mongodb+srv://node:dgCxcaMQyOU5RtBA@node.tabkb.mongodb.net/stumble")
 }
 
-export default dbConnection;
+module.exports = dbConnection;
