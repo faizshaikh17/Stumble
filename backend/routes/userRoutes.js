@@ -3,11 +3,13 @@ const userRouter = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken')
+const { isSignupUserValidated, isLoginUserValidated } = require('../validations/validator')
 
 // -------------Registration of a User into Database--------------
 
 userRouter.post('/users/register', async (req, res) => {
     try {
+        isSignupUserValidated(req)
         const { name, emailId, password } = req.body;
         const hashPassword = await bcrypt.hash(password, 10);
         const user = new User({
@@ -22,9 +24,12 @@ userRouter.post('/users/register', async (req, res) => {
     }
 })
 
+// -------------Authentication of a User--------------
+
 userRouter.post('/users/login', async (req, res) => {
 
     try {
+        isLoginUserValidated(req);
         const { emailId, password } = req.body;
         console.log(emailId, password)
         const user = await User.findOne({ emailId })
