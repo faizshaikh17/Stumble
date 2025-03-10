@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cookieParser = require('cookie-parser');
-const userRouter = require('./routes/userRoutes');
 
 const dbConnection = require('./config/database');
 
@@ -12,6 +11,9 @@ dbConnection()
 
 app.use(express.json());
 app.use(cookieParser());
+
+const userRouter = require('./routes/userRoutes');
+
 
 app.use('/', userRouter);
 
