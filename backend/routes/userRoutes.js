@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken')
 const { isSignupUserValidated, isLoginUserValidated } = require('../validations/validator')
+const logger = require('../middlewares/authenticated')
 
 // -------------Registration of a User into Database--------------
 
@@ -31,7 +32,6 @@ userRouter.post('/users/login', async (req, res) => {
     try {
         isLoginUserValidated(req);
         const { emailId, password } = req.body;
-        console.log(emailId, password)
         const user = await User.findOne({ emailId })
         if (!user) {
             throw new Error("Invalid credentials")
@@ -51,13 +51,81 @@ userRouter.post('/users/login', async (req, res) => {
     }
 })
 
-userRouter.get('/users/profile', async (req, res) => {
-    try {
+// -------------Logout feature for a User--------------
 
+userRouter.post('/users/logout', async (req, res) => {
+
+    try {
+        res.cookie('token', null, { expires: new Date(Date.now()) }).send("logout Succesful");
+    } catch (err) {
+        res.status(400).send("Could'nt Logout " + err.message)
+    }
+})
+
+// -------------Profile of a User--------------
+
+userRouter.get('/users/profile', logger, async (req, res) => {
+    try {
+        const user = req.user;
+        res.send(user);
     } catch (err) {
         res.status(400).send("Could'nt find Profile " + err.message)
     }
 })
+
+// -------------Update profile of a User--------------
+
+userRouter.put('/users/profile', logger, async (req, res) => {
+    try {
+        const userId = req.user.userId
+        const { name, emailId } = req.body
+        const user = await User.findByIdAndUpdate(userId, { name, emailId });
+        await user.save();
+        res.send(user);
+    } catch (err) {
+        res.status(400).send("Could'nt find Profile " + err.message)
+    }
+})
+
+// -------------Delete profile of a User--------------
+
+userRouter.delete('/users/profile', logger, async (req, res) => {
+    try {
+        const user = req.user
+        await User.findByIdAndDelete(user);
+        res.send("Profile removed");
+    } catch (err) {
+        res.status(400).send("Could'nt find Profile " + err.message)
+    }
+})
+
+// -------------Password reset of a User--------------
+
+userRouter.put('/users/forgot-password', logger, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
+        const { emailId, newPassword } = req.body;
+
+        if (emailId !== loggedInUser.emailId) {
+            throw new Error("Enter correct email")
+        }
+        const isSamePassword = await bcrypt.compare(newPassword, loggedInUser.password);
+        if (isSamePassword) {
+            throw new Error("Password must be different")
+        }
+
+        const hashPassword = await bcrypt.hash(newPassword, 10)
+        const user = await User.findByIdAndUpdate(loggedInUser.userId, { password: hashPassword })
+        await user.save();
+        console.log(user)
+        res.send("Password updated");
+    } catch (err) {
+        res.status(400).send("Could'nt update password, " + err.message)
+    }
+})
+
+
+
 
 module.exports = userRouter
 
