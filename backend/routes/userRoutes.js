@@ -51,5 +51,13 @@ userRouter.post('/users/login', async (req, res) => {
     }
 })
 
+userRouter.get('/users/profile', async (req, res) => {
+    try {
+
+    } catch (err) {
+        res.status(400).send("Could'nt find Profile " + err.message)
+    }
+})
+
 module.exports = userRouter
 
