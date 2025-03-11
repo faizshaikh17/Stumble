@@ -1,5 +1,4 @@
 const validator = require('validator');
-const User = require('../models/user')
 
 // ---------------------Signup User validation------------------------
 
