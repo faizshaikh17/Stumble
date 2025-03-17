@@ -2,18 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import Register from './pages/Register'
+import { Register } from './components/Register'
 
 const router = createBrowserRouter([
   {
     path: `/`,
     element: <App />,
     children: [
-      // {
-      //   path: `/`,
-      //   element: <Home />
-      // }
-      // ,
       {
         path: `/users/signup`,
         element: (
@@ -22,15 +17,6 @@ const router = createBrowserRouter([
           // </AuthLayout>
         )
       },
-      {
-        path: `/login`,
-        element: (
-          <AuthLayout authentication={false}>
-            <Login />
-          </AuthLayout>
-        )
-      }
-
     ]
   }
 ])
