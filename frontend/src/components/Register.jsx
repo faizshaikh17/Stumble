@@ -9,12 +9,15 @@ const Register = () => {
   const signup = async (data) => {
     setSubmitError("");
     // console.log(JSON.stringify(data));
+    console.log(data.password);
+
     try {
       const response = await axios.post("http://localhost:3000/users/register", data);
-      console.log("Signup successful:", response.data);
+      console.log(response.data);
       reset(); // Reset form after successful submission
     } catch (err) {
-      setSubmitError(err.response?.data?.message || "Signup failed");
+      console.log(err?.response?.data);
+      setSubmitError(err?.response?.data || "Signup failed");
     }
   };
 

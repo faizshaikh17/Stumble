@@ -21,6 +21,7 @@ userRouter.post('/users/register', async (req, res) => {
         await user.save();
         res.send("Sign Up Succesfully");
     } catch (err) {
+        
         res.status(400).send("Could'nt Register " + err.message)
     }
 })
