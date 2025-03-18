@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-const Signup = () => {
+const Register = () => {
   const { register, handleSubmit, reset } = useForm(); // Use react-hook-form
   const [submitError, setSubmitError] = useState("");
 
   const signup = async (data) => {
     setSubmitError("");
-
+    // console.log(JSON.stringify(data));
     try {
       const response = await axios.post("http://localhost:3000/users/register", data);
       console.log("Signup successful:", response.data);
@@ -40,27 +40,27 @@ const Signup = () => {
                 type="text"
                 placeholder="Name"
                 {...register("name", { required: true })}
-                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
-            
+
             {/* Email */}
             <div className="input-group">
               <input
                 type="email"
                 placeholder="Email"
-                {...register("email", { required: true })}
-                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                {...register("emailId", { required: true })}
+                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
-            
+
             {/* Password */}
             <div className="input-group">
               <input
                 type="password"
                 placeholder="Password"
                 {...register("password", { required: true })}
-                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="w-full py-2 px-4 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ const Signup = () => {
 
         <p className="mt-4 text-center text-sm text-gray-700">
           Have an account?{" "}
-          <button className="font-medium text-[#09090B] hover:text-[#09090B] focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors duration-200">
+          <button className="font-medium text-[#09090B] hover:text-[#09090B] focus:outline-none focus:ring-1 focus:ring-black transition-colors duration-200">
             Log In
           </button>
         </p>
@@ -92,4 +92,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Register;
