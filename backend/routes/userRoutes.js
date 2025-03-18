@@ -12,6 +12,10 @@ userRouter.post('/users/register', async (req, res) => {
     try {
         isSignupUserValidated(req)
         const { name, emailId, password } = req.body;
+        const userExist = await User.findOne({ emailId })
+        if (userExist) {
+            throw new Error("Email already exist")
+        }
         const hashPassword = await bcrypt.hash(password, 10);
         const user = new User({
             name,
@@ -21,7 +25,7 @@ userRouter.post('/users/register', async (req, res) => {
         await user.save();
         res.send("Sign Up Succesfully");
     } catch (err) {
-        
+
         res.status(400).send("Could'nt Register " + err.message)
     }
 })
@@ -48,7 +52,7 @@ userRouter.post('/users/login', async (req, res) => {
         res.cookie('token', token).send("login Succesful");
 
     } catch (err) {
-        res.status(400).send("Could'nt Login " + err.message)
+        res.status(400).send(err.message)
     }
 })
 

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 const Register = () => {
   const { register, handleSubmit, reset } = useForm(); // Use react-hook-form
@@ -79,7 +81,9 @@ const Register = () => {
               type="submit"
               className="w-full py-2 px-4 text-base font-semibold text-white bg-[#09090B] hover:bg-[#09090B] rounded-lg shadow-md transition-colors duration-300"
             >
-              Sign Up
+              <Link to={'/users/login'}>
+                Sign Up
+              </Link>
             </button>
           </div>
         </form>
